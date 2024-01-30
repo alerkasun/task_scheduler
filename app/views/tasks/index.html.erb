@@ -1,0 +1,43 @@
+<h1>Tasks</h1>
+
+<%= form_tag tasks_path, method: :get do %>
+  <%= text_field_tag :title, params[:title], placeholder: "Search by title" %>
+  <%= select_tag :status, 
+                 options_for_select(['ToDo', 'InProgress', 'Done'], selected: params[:status]),
+                 include_blank: 'Select Status' %>
+  <%= text_field_tag :due_date, params[:due_date], placeholder: "Search by due date", type: :date %>
+  <%= submit_tag "Search" %>
+<% end %>
+
+<%= link_to 'Create new task', new_task_path, class: 'btn btn-primary' if user_signed_in? %>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Due date</th>
+      <th>Priority</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @tasks.each do |task| %>
+      <tr>
+        <td><%= task.title %></td>
+        <td><%= task.due_date %></td>
+        <td><%= task.priority %></td>
+        <td><%= task.status %></td>
+        <td>
+          <%= link_to 'Show', task %>
+          <% if user_signed_in? && current_user == task.user %>
+            <%= link_to 'Edit', edit_task_path(task) %>
+            <%= link_to 'Delete', task, method: :delete, data: { confirm: 'Are you sure?' } %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= paginate @tasks %>
