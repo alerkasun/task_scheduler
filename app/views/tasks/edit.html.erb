@@ -3,7 +3,7 @@
 <%= form_with(model: @task, local: true) do |form| %>
   <% if @task.errors.any? %>
     <div class="alert alert-danger">
-      <h2><%= pluralize(@task.errors.count, "помилка", "помилки") %> завадили збереженню цього завдання:</h2>
+      <h2><%= pluralize(@task.errors.count, "error", "errors") %> were found:</h2>
       <ul>
         <% @task.errors.full_messages.each do |message| %>
           <li><%= message %></li>
